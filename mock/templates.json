@@ -4,7 +4,7 @@
     "id": "plantilla_hot_sale",
     "nombre": "Hot Sale Farmatodo",
     "thumbnail": "https://picsum.photos/seed/hotsale/200/120",
-    "formatos": ["1080x1080", "1080x1920", "300x250", "728x90"],
+    "formatos": ["800x400", "1080x1920", "1200x630", "300x250"],
     "elementos": [
       { "id": "hs_bg", "tipo": "imagen", "zona": "fondo", "src": "https://picsum.photos/seed/bg1/1080/1080", "pos": [0, 0], "tam": [1080, 1080]},
       { "id": "hs_prod", "tipo": "imagen", "zona": "producto", "src": "https://picsum.photos/seed/product1/400/400", "pos": [340, 340], "tam": [400, 400] },
@@ -17,7 +17,7 @@
     "id": "plantilla_cyber_monday",
     "nombre": "Cyber Monday Tech",
     "thumbnail": "https://picsum.photos/seed/cyber/200/120",
-    "formatos": ["1080x1080", "1080x1920", "300x250", "728x90"],
+    "formatos": ["800x400", "1080x1920", "1200x630", "300x250"],
     "elementos": [
       { "id": "cm_bg", "tipo": "imagen", "zona": "fondo", "src": "https://picsum.photos/seed/bg2/1080/1080", "pos": [0, 0], "tam": [1080, 1080]},
       { "id": "cm_prod", "tipo": "imagen", "zona": "producto", "src": "https://picsum.photos/seed/product2/500/500", "pos": [290, 290], "tam": [500, 500] },
@@ -30,7 +30,7 @@
     "id": "plantilla_verano",
     "nombre": "Ofertas de Verano",
     "thumbnail": "https://picsum.photos/seed/summer/200/120",
-    "formatos": ["1080x1080", "1080x1920", "300x250", "728x90"],
+    "formatos": ["800x400", "1080x1920", "1200x630", "300x250"],
     "elementos": [
       { "id": "sum_bg", "tipo": "imagen", "zona": "fondo", "src": "https://picsum.photos/seed/bg3/1080/1080", "pos": [0, 0], "tam": [1080, 1080]},
       { "id": "sum_prod", "tipo": "imagen", "zona": "producto", "src": "https://picsum.photos/seed/product3/450/600", "pos": [315, 240], "tam": [450, 600] },

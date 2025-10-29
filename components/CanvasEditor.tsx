@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 // FIX: Changed fabric import to fix module resolution and type errors.
 import * as fabric from 'fabric';
 import { BannerElement } from '../types';
@@ -17,6 +17,7 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, 
     const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
     const isRenderingRef = useRef<boolean>(false);
     const lastRenderedKeyRef = useRef<string>('');
+    const [scale, setScale] = useState<number>(1);
 
     // Create canvas only when format changes
     useEffect(() => {
@@ -59,6 +60,35 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, 
 
     // Memoize elements serialization to avoid unnecessary re-renders when content is the same
     const elementsKey = useMemo(() => JSON.stringify(elements), [elements]);
+
+    // Compute and apply a scale so the canvas fits inside the available container viewport
+    useEffect(() => {
+        const container = canvasContainerRef.current;
+        if (!container) return;
+
+        const computeScale = () => {
+            const [w, h] = format.split('x').map(Number);
+            const availableWidth = container.clientWidth || w;
+            const availableHeight = container.clientHeight || h;
+            // Scale down to fit, never scale up above 1
+            const nextScale = Math.min(1, Math.min(availableWidth / w, availableHeight / h));
+            setScale(nextScale > 0 && isFinite(nextScale) ? nextScale : 1);
+        };
+
+        // Initial compute
+        computeScale();
+
+        // Observe container size changes
+        const ro = new ResizeObserver(() => computeScale());
+        ro.observe(container);
+
+        // Recompute on window resize as well
+        window.addEventListener('resize', computeScale);
+        return () => {
+            ro.disconnect();
+            window.removeEventListener('resize', computeScale);
+        };
+    }, [format]);
 
     // Render elements separately to avoid infinite loops
     useEffect(() => {
@@ -122,8 +152,12 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, 
     const [width, height] = format.split('x').map(Number);
 
     return (
-        <div ref={canvasContainerRef} style={{ maxWidth: '100%', maxHeight: '100%' }}>
-            <canvas ref={canvasRef} width={width} height={height} />
+        <div ref={canvasContainerRef} style={{ maxWidth: '100%', maxHeight: '100%', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: width * scale, height: height * scale }}>
+                <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
+                    <canvas ref={canvasRef} width={width} height={height} />
+                </div>
+            </div>
         </div>
     );
 };
