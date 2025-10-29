@@ -115,8 +115,6 @@ const App: React.FC = () => {
                                     formats={activeTemplate.formatos} 
                                     activeFormat={activeFormat} 
                                     onSelect={handleFormatSelect}
-                                    currentView={view}
-                                    onViewChange={setView}
                                 />
                                 <MainActions onExportImage={handleExportImage} onExportJson={handleExportJson} />
                             </div>
