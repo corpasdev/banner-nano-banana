@@ -41,9 +41,8 @@ export const loadImageFromUrl = async (canvas: fabric.Canvas, element: BannerEle
 
     if(element.zona === 'fondo'){
         canvas.add(img);
-        // FIX: Use the sendToBack method on the object itself, as canvas.sendToBack is not found in the type definitions.
-        // Cast to fabric.Object to resolve type error for sendToBack method.
-        (img as fabric.Object).sendToBack();
+        // FIX: Use sendObjectToBack method on the canvas, which is the correct way to send objects to the back.
+        canvas.sendObjectToBack(img);
     } else {
          canvas.add(img);
     }

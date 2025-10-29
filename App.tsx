@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 // FIX: Changed fabric import to fix module resolution and type errors.
 import * as fabric from 'fabric';
 import { Template, BannerElement, CanvasView } from './types';
@@ -84,7 +84,11 @@ const App: React.FC = () => {
         }
     };
 
-    const currentLayoutElements = activeTemplate ? adaptarLayout(activeFormat, activeTemplate.elementos) : [];
+    // Memoize the layout elements to avoid recalculating on every render
+    const currentLayoutElements = useMemo(() => {
+        if (!activeTemplate) return [];
+        return adaptarLayout(activeFormat, activeTemplate.elementos);
+    }, [activeFormat, activeTemplate]);
 
     return (
         <div className="min-h-screen flex flex-col font-sans bg-gray-900 text-gray-200">
