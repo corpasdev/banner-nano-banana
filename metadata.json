@@ -1,0 +1,5 @@
+{
+  "name": "AI Banner Studio for Famatodo",
+  "description": "An intelligent web application to automate the creation and editing of advertising banners in multiple formats, powered by Gemini for AI-assisted image generation and editing.",
+  "requestFramePermissions": []
+}

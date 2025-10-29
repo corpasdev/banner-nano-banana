@@ -1,0 +1,42 @@
+
+[
+  {
+    "id": "plantilla_hot_sale",
+    "nombre": "Hot Sale Farmatodo",
+    "thumbnail": "https://picsum.photos/seed/hotsale/200/120",
+    "formatos": ["1080x1080", "1080x1920", "300x250", "728x90"],
+    "elementos": [
+      { "id": "hs_bg", "tipo": "imagen", "zona": "fondo", "src": "https://picsum.photos/seed/bg1/1080/1080", "pos": [0, 0], "tam": [1080, 1080]},
+      { "id": "hs_prod", "tipo": "imagen", "zona": "producto", "src": "https://picsum.photos/seed/product1/400/400", "pos": [340, 340], "tam": [400, 400] },
+      { "id": "hs_offer", "tipo": "texto", "zona": "oferta", "contenido": "Hasta 20% dcto", "font": "Impact", "tam": 96, "color": "#FFD700" },
+      { "id": "hs_logo", "tipo": "logo", "zona": "marca", "src": "https://picsum.photos/seed/logo1/200/80", "pos": [50, 50], "tam": [200, 80] },
+      { "id": "hs_cta", "tipo": "texto", "zona": "cta", "contenido": "¡Compra Ahora!", "font": "Arial", "tam": 48, "color": "#FFFFFF" }
+    ]
+  },
+  {
+    "id": "plantilla_cyber_monday",
+    "nombre": "Cyber Monday Tech",
+    "thumbnail": "https://picsum.photos/seed/cyber/200/120",
+    "formatos": ["1080x1080", "1080x1920", "300x250", "728x90"],
+    "elementos": [
+      { "id": "cm_bg", "tipo": "imagen", "zona": "fondo", "src": "https://picsum.photos/seed/bg2/1080/1080", "pos": [0, 0], "tam": [1080, 1080]},
+      { "id": "cm_prod", "tipo": "imagen", "zona": "producto", "src": "https://picsum.photos/seed/product2/500/500", "pos": [290, 290], "tam": [500, 500] },
+      { "id": "cm_offer", "tipo": "texto", "zona": "oferta", "contenido": "CYBER MONDAY", "font": "Orbitron", "tam": 120, "color": "#00FFFF" },
+      { "id": "cm_logo", "tipo": "logo", "zona": "marca", "src": "https://picsum.photos/seed/logo2/150/50", "pos": [880, 50], "tam": [150, 50] },
+      { "id": "cm_cta", "tipo": "texto", "zona": "cta", "contenido": "OFERTAS AQUÍ", "font": "Arial Black", "tam": 40, "color": "#000000" }
+    ]
+  },
+    {
+    "id": "plantilla_verano",
+    "nombre": "Ofertas de Verano",
+    "thumbnail": "https://picsum.photos/seed/summer/200/120",
+    "formatos": ["1080x1080", "1080x1920", "300x250", "728x90"],
+    "elementos": [
+      { "id": "sum_bg", "tipo": "imagen", "zona": "fondo", "src": "https://picsum.photos/seed/bg3/1080/1080", "pos": [0, 0], "tam": [1080, 1080]},
+      { "id": "sum_prod", "tipo": "imagen", "zona": "producto", "src": "https://picsum.photos/seed/product3/450/600", "pos": [315, 240], "tam": [450, 600] },
+      { "id": "sum_offer", "tipo": "texto", "zona": "oferta", "contenido": "FRESCURA DE VERANO", "font": "Pacifico", "tam": 80, "color": "#22C55E" },
+      { "id": "sum_logo", "tipo": "logo", "zona": "marca", "src": "https://picsum.photos/seed/logo3/180/60", "pos": [50, 1000], "tam": [180, 60] },
+      { "id": "sum_cta", "tipo": "texto", "zona": "cta", "contenido": "Descubre más", "font": "Roboto", "tam": 36, "color": "#FFFFFF" }
+    ]
+  }
+]
