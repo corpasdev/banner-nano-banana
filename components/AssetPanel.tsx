@@ -1,18 +1,27 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
+import { BannerElement } from '../types';
 
 interface AssetPanelProps {
     aiGeneratedImages: string[];
     onImageSelect: (src: string) => void;
+    templateElements?: BannerElement[];
 }
 
-const AssetPanel: React.FC<AssetPanelProps> = ({ aiGeneratedImages, onImageSelect }) => {
-    const placeholderAssets = [
-        "https://picsum.photos/seed/asset1/150/150",
-        "https://picsum.photos/seed/asset2/150/150",
-        "https://picsum.photos/seed/asset3/150/150",
-        "https://picsum.photos/seed/asset4/150/150",
-    ];
+const AssetPanel: React.FC<AssetPanelProps> = ({ aiGeneratedImages, onImageSelect, templateElements = [] }) => {
+    // Extract image URLs from template elements (images and logos)
+    const templateImages = useMemo(() => {
+        const images: string[] = [];
+        templateElements.forEach(element => {
+            if ((element.tipo === 'imagen' || element.tipo === 'logo') && element.src) {
+                // Avoid duplicates
+                if (!images.includes(element.src)) {
+                    images.push(element.src);
+                }
+            }
+        });
+        return images;
+    }, [templateElements]);
 
     return (
         <div>
@@ -25,12 +34,16 @@ const AssetPanel: React.FC<AssetPanelProps> = ({ aiGeneratedImages, onImageSelec
                         <img src={src} alt={`AI Generated ${index + 1}`} className="w-full h-full object-cover" />
                     </button>
                 ))}
-                <h3 className="col-span-2 text-sm font-bold text-gray-400 mt-4">Placeholders</h3>
-                {placeholderAssets.map((src, index) => (
-                    <button key={`ph-${index}`} onClick={() => onImageSelect(src)} className="aspect-square rounded-md overflow-hidden hover:ring-2 ring-cyan-500 transition-all">
-                        <img src={src} alt={`Placeholder ${index + 1}`} className="w-full h-full object-cover" />
-                    </button>
-                ))}
+                {templateImages.length > 0 && (
+                    <>
+                        <h3 className="col-span-2 text-sm font-bold text-gray-400 mt-4">Template Images</h3>
+                        {templateImages.map((src, index) => (
+                            <button key={`template-${index}`} onClick={() => onImageSelect(src)} className="aspect-square rounded-md overflow-hidden hover:ring-2 ring-cyan-500 transition-all">
+                                <img src={src} alt={`Template Image ${index + 1}`} className="w-full h-full object-cover" />
+                            </button>
+                        ))}
+                    </>
+                )}
             </div>
         </div>
     );

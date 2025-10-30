@@ -120,7 +120,11 @@ const App: React.FC = () => {
 
             <div className="flex flex-1 overflow-hidden">
                 <aside className="w-64 bg-gray-800 p-4 overflow-y-auto flex flex-col space-y-6">
-                    <AssetPanel aiGeneratedImages={aiGeneratedImages} onImageSelect={handleReplaceImage}/>
+                    <AssetPanel 
+                        aiGeneratedImages={aiGeneratedImages} 
+                        onImageSelect={handleReplaceImage}
+                        templateElements={currentLayoutElements}
+                    />
                 </aside>
 
                 <main className="flex-1 flex flex-col p-4 md:p-6 bg-gray-900 overflow-hidden">
