@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Sparkles, Lock, Unlock, Grid3X3, ZoomIn, Maximize2 } from 'lucide-react';
 // FIX: Changed fabric import to fix module resolution and type errors.
 import * as fabric from 'fabric';
 import { Template, BannerElement, CanvasView } from './types';
@@ -23,6 +24,10 @@ const App: React.FC = () => {
     const [view, setView] = useState<CanvasView>('single');
     const [aiGeneratedImages, setAiGeneratedImages] = useState<string[]>([]);
     const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
+    const [isLocked, setIsLocked] = useState<boolean>(false);
+    const [showGrid, setShowGrid] = useState<boolean>(false);
+    const [autoFit, setAutoFit] = useState<boolean>(true);
+    const [zoom, setZoom] = useState<number>(1);
 
     useEffect(() => {
         const loadTemplates = async () => {
@@ -100,9 +105,7 @@ const App: React.FC = () => {
         <div className="min-h-screen flex flex-col font-sans bg-gray-900 text-gray-200">
             <header className="bg-gray-800 shadow-md p-4 flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-cyan-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
-                    </svg>
+                    <Sparkles className="h-8 w-8 text-cyan-400" />
                     <h1 className="text-2xl font-bold tracking-wider">AI Banner Studio</h1>
                     {activeTemplate && (
                         <button
@@ -145,11 +148,69 @@ const App: React.FC = () => {
                                         elements={currentLayoutElements}
                                         onReady={setCanvas}
                                         onObjectSelect={handleObjectSelection}
+                                        locked={isLocked}
+                                        showGrid={showGrid}
+                                        autoFit={autoFit}
+                                        requestedScale={autoFit ? undefined : zoom}
+                                        onScaleChange={(s) => setZoom(s)}
                                     />
                                 ) : (
                                     <PreviewPanel
                                         template={activeTemplate}
                                     />
+                                )}
+
+                                {view === 'single' && (
+                                    <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 flex items-center space-x-2 bg-gray-800/80 backdrop-blur rounded-md px-2 py-1 shadow">
+                                        <button
+                                            onClick={() => setIsLocked(v => !v)}
+                                            className={`px-2 py-1 text-sm rounded ${isLocked ? 'bg-gray-700 text-red-300' : 'bg-gray-700 text-gray-300'} hover:bg-gray-600`}
+                                            title={isLocked ? 'Unlock panel' : 'Lock panel'}
+                                            aria-label={isLocked ? 'Unlock panel' : 'Lock panel'}
+                                        >
+                                            {isLocked ? (
+                                                <Lock className="h-4 w-4" />
+                                            ) : (
+                                                <Unlock className="h-4 w-4" />
+                                            )}
+                                        </button>
+
+                                        <button
+                                            onClick={() => setShowGrid(v => !v)}
+                                            className={`px-2 py-1 text-sm rounded ${showGrid ? 'bg-gray-700 text-cyan-300' : 'bg-gray-700 text-gray-300'} hover:bg-gray-600`}
+                                            title={showGrid ? 'Hide grid' : 'Show grid'}
+                                            aria-label={showGrid ? 'Hide grid' : 'Show grid'}
+                                        >
+                                            <Grid3X3 className="h-4 w-4" />
+                                        </button>
+
+                                        <div className="px-2 py-1 text-sm text-gray-300 min-w-[56px] text-center" title="Zoom level">
+                                            {Math.round((zoom || 1) * 100)}%
+                                        </div>
+
+                                        <button
+                                            onClick={() => {
+                                                setAutoFit(false);
+                                                setZoom(z => Math.min(3, (z || 1) * 1.1));
+                                            }}
+                                            className="px-2 py-1 text-sm rounded bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                            title="Zoom in"
+                                            aria-label="Zoom in"
+                                        >
+                                            <ZoomIn className="h-4 w-4" />
+                                        </button>
+
+                                        <button
+                                            onClick={() => {
+                                                setAutoFit(true);
+                                            }}
+                                            className="px-2 py-1 text-sm rounded bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                            title="Reset / Fit to screen"
+                                            aria-label="Fit to screen"
+                                        >
+                                            <Maximize2 className="h-4 w-4" />
+                                        </button>
+                                    </div>
                                 )}
                             </div>
                         </>

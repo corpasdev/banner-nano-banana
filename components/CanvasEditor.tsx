@@ -9,9 +9,14 @@ interface CanvasEditorProps {
     elements: BannerElement[];
     onReady: (canvas: fabric.Canvas) => void;
     onObjectSelect: (object: fabric.Object | null) => void;
+    locked?: boolean;
+    showGrid?: boolean;
+    autoFit?: boolean; // when true, compute scale to fit viewport; when false, use requestedScale
+    requestedScale?: number; // external scale when autoFit is false
+    onScaleChange?: (scale: number) => void; // notify parent when internal scale changes
 }
 
-const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, onObjectSelect }) => {
+const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, onObjectSelect, locked = false, showGrid = false, autoFit = true, requestedScale, onScaleChange }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const canvasContainerRef = useRef<HTMLDivElement>(null);
     const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
@@ -34,8 +39,8 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, 
         fabricCanvasRef.current = canvas;
         onReady(canvas);
 
-        // FIX: Changed fabric.TEvent to fabric.IEvent as it correctly types the event object with a 'target' property for selection events.
-        const handleSelection = (e: fabric.IEvent) => {
+        // Selection event handler; use a permissive type to support various fabric builds
+        const handleSelection = (e: any) => {
             onObjectSelect(e.target || null);
         };
         const handleSelectionCleared = () => {
@@ -75,23 +80,64 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, 
             const availableHeight = Math.max(0, viewportHeight - rect.top - 16);
             // Scale down to fit, never scale up above 1
             const nextScale = Math.min(1, Math.min(availableWidth / w, availableHeight / h));
-            setScale(nextScale > 0 && isFinite(nextScale) ? nextScale : 1);
+            const finalScale = nextScale > 0 && isFinite(nextScale) ? nextScale : 1;
+            setScale(finalScale);
+            if (onScaleChange) onScaleChange(finalScale);
         };
 
         // Initial compute
-        computeScale();
+        if (autoFit) {
+            computeScale();
+        } else if (typeof requestedScale === 'number' && isFinite(requestedScale) && requestedScale > 0) {
+            setScale(requestedScale);
+            if (onScaleChange) onScaleChange(requestedScale);
+        }
 
         // Observe container size changes
-        const ro = new ResizeObserver(() => computeScale());
+        const ro = new ResizeObserver(() => {
+            if (autoFit) computeScale();
+        });
         ro.observe(container);
 
         // Recompute on window resize as well
-        window.addEventListener('resize', computeScale);
+        const onResize = () => {
+            if (autoFit) computeScale();
+        };
+        window.addEventListener('resize', onResize);
         return () => {
             ro.disconnect();
-            window.removeEventListener('resize', computeScale);
+            window.removeEventListener('resize', onResize);
         };
-    }, [format]);
+    }, [format, autoFit, requestedScale, onScaleChange]);
+
+    // When external requestedScale changes while not autoFit, apply it
+    useEffect(() => {
+        if (!autoFit && typeof requestedScale === 'number' && isFinite(requestedScale) && requestedScale > 0) {
+            setScale(requestedScale);
+            if (onScaleChange) onScaleChange(requestedScale);
+        }
+    }, [requestedScale, autoFit, onScaleChange]);
+
+    // Apply lock/unlock to canvas and objects
+    useEffect(() => {
+        const canvas = fabricCanvasRef.current;
+        if (!canvas) return;
+        canvas.selection = !locked;
+        const objects = canvas.getObjects();
+        objects.forEach(obj => {
+            obj.selectable = !locked;
+            obj.evented = !locked;
+            if (obj.hasOwnProperty('lockMovementX')) {
+                (obj as any).lockMovementX = locked;
+                (obj as any).lockMovementY = locked;
+                (obj as any).lockScalingX = locked;
+                (obj as any).lockScalingY = locked;
+                (obj as any).lockRotation = locked;
+            }
+        });
+        canvas.discardActiveObject();
+        canvas.renderAll();
+    }, [locked]);
 
     // Render elements separately to avoid infinite loops
     useEffect(() => {
@@ -155,7 +201,19 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, 
     const [width, height] = format.split('x').map(Number);
 
     return (
-        <div ref={canvasContainerRef} style={{ maxWidth: '100%', maxHeight: '100%', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div ref={canvasContainerRef} style={{ maxWidth: '100%', maxHeight: '100%', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            {showGrid && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
+                        pointerEvents: 'none',
+                        backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)`,
+                        backgroundSize: '20px 20px',
+                        zIndex: 1,
+                    }}
+                />
+            )}
             <div style={{ width: width * scale, height: height * scale, borderRadius: 8, overflow: 'hidden' }}>
                 <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
                     <canvas ref={canvasRef} width={width} height={height} />
