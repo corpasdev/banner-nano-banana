@@ -36,8 +36,8 @@ export const loadImageFromUrl = async (canvas: fabric.Canvas, element: BannerEle
         crossOrigin: 'anonymous',
         objectCaching: false,
     });
-    // FIX: Cast to fabric.Object to correctly assign custom property, resolving module augmentation issue.
-    (img as fabric.Object).elementData = element;
+    // Attach custom metadata for later reference
+    (img as any).elementData = element;
 
     if(element.zona === 'fondo'){
         canvas.add(img);
@@ -57,15 +57,15 @@ export const addTextToCanvas = (canvas: fabric.Canvas, element: BannerElement) =
         top: top,
         fontSize: typeof element.tam === 'number' ? element.tam : 48,
         fill: element.color || '#FFFFFF',
-        fontFamily: element.font || 'Arial',
+        fontFamily: 'Montserrat, Arial, sans-serif',
         textAlign: 'center',
         originX: 'center',
         originY: 'center',
         width: 500, // Default width, will auto-adjust
         objectCaching: false,
     });
-    // FIX: Cast to fabric.Object to correctly assign custom property, resolving module augmentation issue for Textbox.
-    (text as fabric.Object).elementData = element;
+    // Attach custom metadata for later reference
+    (text as any).elementData = element;
     canvas.add(text);
 };
 
