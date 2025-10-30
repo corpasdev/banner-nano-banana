@@ -156,7 +156,7 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, 
 
     return (
         <div ref={canvasContainerRef} style={{ maxWidth: '100%', maxHeight: '100%', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ width: width * scale, height: height * scale }}>
+            <div style={{ width: width * scale, height: height * scale, borderRadius: 8, overflow: 'hidden' }}>
                 <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
                     <canvas ref={canvasRef} width={width} height={height} />
                 </div>
