@@ -202,20 +202,23 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, 
 
     return (
         <div ref={canvasContainerRef} style={{ maxWidth: '100%', maxHeight: '100%', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-            {showGrid && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        inset: 0,
-                        pointerEvents: 'none',
-                        backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)`,
-                        backgroundSize: '20px 20px',
-                        zIndex: 1,
-                    }}
-                />
-            )}
-            <div style={{ width: width * scale, height: height * scale, borderRadius: 8, overflow: 'hidden' }}>
-                <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}>
+            <div style={{ width: width * scale, height: height * scale, borderRadius: 8, overflow: 'hidden', position: 'relative' }}>
+                {showGrid && (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            pointerEvents: 'none',
+                            backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)`,
+                            backgroundSize: '20px 20px',
+                            zIndex: 2,
+                        }}
+                    />
+                )}
+                <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left', position: 'relative', zIndex: 1 }}>
                     <canvas ref={canvasRef} width={width} height={height} />
                 </div>
             </div>

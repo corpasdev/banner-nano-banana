@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Sparkles, Lock, Unlock, Grid3X3, ZoomIn, Maximize2 } from 'lucide-react';
+import { Sparkles, Lock, Unlock, Grid3X3, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
 // FIX: Changed fabric import to fix module resolution and type errors.
 import * as fabric from 'fabric';
 import { Template, BannerElement, CanvasView } from './types';
@@ -198,6 +198,18 @@ const App: React.FC = () => {
                                             aria-label="Zoom in"
                                         >
                                             <ZoomIn className="h-4 w-4" />
+                                        </button>
+
+                                        <button
+                                            onClick={() => {
+                                                setAutoFit(false);
+                                                setZoom(z => Math.max(0.1, (z || 1) / 1.1));
+                                            }}
+                                            className="px-2 py-1 text-sm rounded bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                            title="Zoom out"
+                                            aria-label="Zoom out"
+                                        >
+                                            <ZoomOut className="h-4 w-4" />
                                         </button>
 
                                         <button
