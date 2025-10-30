@@ -69,7 +69,10 @@ const CanvasEditor: React.FC<CanvasEditorProps> = ({ format, elements, onReady, 
         const computeScale = () => {
             const [w, h] = format.split('x').map(Number);
             const availableWidth = container.clientWidth || w;
-            const availableHeight = container.clientHeight || h;
+            // Cap height to visible viewport area below the container top, minus a small margin
+            const rect = container.getBoundingClientRect();
+            const viewportHeight = typeof window !== 'undefined' ? window.innerHeight : h;
+            const availableHeight = Math.max(0, viewportHeight - rect.top - 16);
             // Scale down to fit, never scale up above 1
             const nextScale = Math.min(1, Math.min(availableWidth / w, availableHeight / h));
             setScale(nextScale > 0 && isFinite(nextScale) ? nextScale : 1);
