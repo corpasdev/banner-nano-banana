@@ -110,7 +110,7 @@ const App: React.FC = () => {
                     {activeTemplate && (
                         <button
                             onClick={handleOpenTemplateModal}
-                            className="ml-4 px-3 py-1.5 text-sm font-medium rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors"
+                            className="ml-4 px-3 py-1.5 text-sm font-medium rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors cursor-pointer"
                         >
                             Cambiar Template
                         </button>
@@ -164,7 +164,7 @@ const App: React.FC = () => {
                                     <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 flex items-center space-x-2 bg-gray-800/80 backdrop-blur rounded-md px-2 py-1 shadow">
                                         <button
                                             onClick={() => setIsLocked(v => !v)}
-                                            className={`px-2 py-1 text-sm rounded ${isLocked ? 'bg-gray-700 text-red-300' : 'bg-gray-700 text-gray-300'} hover:bg-gray-600`}
+                                            className={`px-2 py-1 text-sm rounded ${isLocked ? 'bg-gray-700 text-red-300' : 'bg-gray-700 text-gray-300'} hover:bg-gray-600 cursor-pointer`}
                                             title={isLocked ? 'Unlock panel' : 'Lock panel'}
                                             aria-label={isLocked ? 'Unlock panel' : 'Lock panel'}
                                         >
@@ -177,7 +177,7 @@ const App: React.FC = () => {
 
                                         <button
                                             onClick={() => setShowGrid(v => !v)}
-                                            className={`px-2 py-1 text-sm rounded ${showGrid ? 'bg-gray-700 text-cyan-300' : 'bg-gray-700 text-gray-300'} hover:bg-gray-600`}
+                                            className={`px-2 py-1 text-sm rounded ${showGrid ? 'bg-gray-700 text-cyan-300' : 'bg-gray-700 text-gray-300'} hover:bg-gray-600 cursor-pointer`}
                                             title={showGrid ? 'Hide grid' : 'Show grid'}
                                             aria-label={showGrid ? 'Hide grid' : 'Show grid'}
                                         >
@@ -193,7 +193,7 @@ const App: React.FC = () => {
                                                 setAutoFit(false);
                                                 setZoom(z => Math.min(3, (z || 1) * 1.1));
                                             }}
-                                            className="px-2 py-1 text-sm rounded bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                            className="px-2 py-1 text-sm rounded bg-gray-700 text-gray-300 hover:bg-gray-600 cursor-pointer"
                                             title="Zoom in"
                                             aria-label="Zoom in"
                                         >
@@ -205,7 +205,7 @@ const App: React.FC = () => {
                                                 setAutoFit(false);
                                                 setZoom(z => Math.max(0.1, (z || 1) / 1.1));
                                             }}
-                                            className="px-2 py-1 text-sm rounded bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                            className="px-2 py-1 text-sm rounded bg-gray-700 text-gray-300 hover:bg-gray-600 cursor-pointer"
                                             title="Zoom out"
                                             aria-label="Zoom out"
                                         >
@@ -216,7 +216,7 @@ const App: React.FC = () => {
                                             onClick={() => {
                                                 setAutoFit(true);
                                             }}
-                                            className="px-2 py-1 text-sm rounded bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                            className="px-2 py-1 text-sm rounded bg-gray-700 text-gray-300 hover:bg-gray-600 cursor-pointer"
                                             title="Reset / Fit to screen"
                                             aria-label="Fit to screen"
                                         >

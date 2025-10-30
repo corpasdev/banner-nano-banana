@@ -32,7 +32,7 @@ const TemplateModal: React.FC<TemplateModalProps> = ({ templates, onSelect, acti
                     <h2 className="text-2xl font-bold text-cyan-400">Selecciona un Template</h2>
                     <button
                         onClick={onClose}
-                        className="text-gray-400 hover:text-white transition-colors"
+                        className="text-gray-400 hover:text-white transition-colors cursor-pointer"
                         aria-label="Cerrar"
                     >
                         <X className="h-6 w-6" />
@@ -44,7 +44,7 @@ const TemplateModal: React.FC<TemplateModalProps> = ({ templates, onSelect, acti
                         <button
                             key={template.id}
                             onClick={() => handleSelect(template)}
-                            className={`text-left p-4 rounded-lg transition-all duration-200 ${
+                            className={`text-left p-4 rounded-lg transition-all duration-200 cursor-pointer ${
                                 activeTemplateId === template.id
                                     ? 'bg-cyan-500/20 ring-2 ring-cyan-500 shadow-lg'
                                     : 'bg-gray-700 hover:bg-gray-600'

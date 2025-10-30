@@ -30,7 +30,7 @@ const AssetPanel: React.FC<AssetPanelProps> = ({ aiGeneratedImages, onImageSelec
                 <h3 className="col-span-2 text-sm font-bold text-gray-400 mt-2">AI Generated</h3>
                 {aiGeneratedImages.length === 0 && <p className="col-span-2 text-xs text-gray-500">Generate images in the properties panel.</p>}
                 {aiGeneratedImages.map((src, index) => (
-                    <button key={`ai-${index}`} onClick={() => onImageSelect(src)} className="aspect-square rounded-md overflow-hidden hover:ring-2 ring-cyan-500 transition-all">
+                    <button key={`ai-${index}`} onClick={() => onImageSelect(src)} className="aspect-square rounded-md overflow-hidden hover:ring-2 ring-cyan-500 transition-all cursor-pointer">
                         <img src={src} alt={`AI Generated ${index + 1}`} className="w-full h-full object-cover" />
                     </button>
                 ))}
@@ -38,7 +38,7 @@ const AssetPanel: React.FC<AssetPanelProps> = ({ aiGeneratedImages, onImageSelec
                     <>
                         <h3 className="col-span-2 text-sm font-bold text-gray-400 mt-4">Template Images</h3>
                         {templateImages.map((src, index) => (
-                            <button key={`template-${index}`} onClick={() => onImageSelect(src)} className="aspect-square rounded-md overflow-hidden hover:ring-2 ring-cyan-500 transition-all">
+                            <button key={`template-${index}`} onClick={() => onImageSelect(src)} className="aspect-square rounded-md overflow-hidden hover:ring-2 ring-cyan-500 transition-all cursor-pointer">
                                 <img src={src} alt={`Template Image ${index + 1}`} className="w-full h-full object-cover" />
                             </button>
                         ))}

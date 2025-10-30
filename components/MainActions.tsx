@@ -11,7 +11,7 @@ const MainActions: React.FC<MainActionsProps> = ({ onExportImage, onExportJson }
     const Button: React.FC<{ onClick: () => void; children: React.ReactNode, className?: string }> = ({ onClick, children, className }) => (
         <button
             onClick={onClick}
-            className={`flex items-center space-x-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors ${className}`}
+            className={`flex items-center space-x-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors cursor-pointer ${className}`}
         >
             {children}
         </button>

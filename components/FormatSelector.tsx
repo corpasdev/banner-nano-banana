@@ -26,7 +26,7 @@ const FormatSelector: React.FC<FormatSelectorProps> = ({ formats, activeFormat, 
                 <button
                     key={format}
                     onClick={() => onSelect(format)}
-                    className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                    className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors cursor-pointer ${
                         activeFormat === format
                             ? 'bg-cyan-500 text-white shadow-md'
                             : 'bg-gray-700 hover:bg-gray-600 text-gray-300'

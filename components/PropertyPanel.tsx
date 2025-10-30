@@ -211,7 +211,7 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({ selectedObject, onPropert
                  <button
                     onClick={handleAiGenerate}
                     disabled={isAiGenerating}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-500 text-white font-bold py-2 px-4 rounded-md transition duration-300"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-500 text-white font-bold py-2 px-4 rounded-md transition duration-300 cursor-pointer"
                 >
                     {isAiGenerating ? 'Generating...' : 'Generate New Image'}
                 </button>
