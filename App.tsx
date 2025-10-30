@@ -4,7 +4,7 @@ import * as fabric from 'fabric';
 import { Template, BannerElement, CanvasView } from './types';
 import { adaptarLayout } from './layouts/autoLayout';
 
-import TemplateSelector from './components/TemplateSelector';
+import TemplateModal from './components/TemplateModal';
 import CanvasEditor from './components/CanvasEditor';
 import PropertyPanel from './components/PropertyPanel';
 import FormatSelector from './components/FormatSelector';
@@ -22,6 +22,7 @@ const App: React.FC = () => {
     const [selectedObject, setSelectedObject] = useState<fabric.Object | null>(null);
     const [view, setView] = useState<CanvasView>('single');
     const [aiGeneratedImages, setAiGeneratedImages] = useState<string[]>([]);
+    const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
 
     useEffect(() => {
         const loadTemplates = async () => {
@@ -41,7 +42,7 @@ const App: React.FC = () => {
 
     useEffect(() => {
         if (templates.length > 0 && !activeTemplate) {
-            handleTemplateSelect(templates[0]);
+            setShowTemplateModal(true);
         }
     }, [templates, activeTemplate]);
 
@@ -49,6 +50,11 @@ const App: React.FC = () => {
         setActiveTemplate(template);
         setActiveFormat(template.formatos[0]);
         setView('single');
+        setShowTemplateModal(false);
+    };
+
+    const handleOpenTemplateModal = () => {
+        setShowTemplateModal(true);
     };
 
     const handleFormatSelect = (format: string) => {
@@ -98,25 +104,34 @@ const App: React.FC = () => {
                         <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
                     </svg>
                     <h1 className="text-2xl font-bold tracking-wider">AI Banner Studio</h1>
+                    {activeTemplate && (
+                        <button
+                            onClick={handleOpenTemplateModal}
+                            className="ml-4 px-3 py-1.5 text-sm font-medium rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors"
+                        >
+                            Cambiar Template
+                        </button>
+                    )}
                 </div>
+                {activeTemplate && (
+                    <MainActions onExportImage={handleExportImage} onExportJson={handleExportJson} />
+                )}
             </header>
 
             <div className="flex flex-1 overflow-hidden">
                 <aside className="w-64 bg-gray-800 p-4 overflow-y-auto flex flex-col space-y-6">
-                    <TemplateSelector templates={templates} onSelect={handleTemplateSelect} activeTemplateId={activeTemplate?.id || ''}/>
                     <AssetPanel aiGeneratedImages={aiGeneratedImages} onImageSelect={handleReplaceImage}/>
                 </aside>
 
                 <main className="flex-1 flex flex-col p-4 md:p-6 bg-gray-900 overflow-hidden">
                     {activeTemplate && (
                         <>
-                            <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-4">
+                            <div className="mb-4">
                                 <FormatSelector 
                                     formats={activeTemplate.formatos} 
                                     activeFormat={activeFormat} 
                                     onSelect={handleFormatSelect}
                                 />
-                                <MainActions onExportImage={handleExportImage} onExportJson={handleExportJson} />
                             </div>
                             <div className="flex-1 bg-gray-800/50 rounded-lg p-2 flex items-center justify-center overflow-auto relative">
                                 {view === 'single' ? (
@@ -146,6 +161,14 @@ const App: React.FC = () => {
                      />
                 </aside>
             </div>
+
+            <TemplateModal
+                templates={templates}
+                onSelect={handleTemplateSelect}
+                activeTemplateId={activeTemplate?.id || ''}
+                isOpen={showTemplateModal}
+                onClose={() => setShowTemplateModal(false)}
+            />
         </div>
     );
 };
